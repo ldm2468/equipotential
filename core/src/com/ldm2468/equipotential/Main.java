@@ -33,7 +33,7 @@ public class Main extends ApplicationAdapter {
             if (y * y + (Math.abs(x) - dist) * (Math.abs(x) - dist) < 0.5) {
                 return 0;
             }
-            return 10.075f * (float) (1 / Math.sqrt((y * y + (x - dist) * (x - dist))) - 1 / Math.sqrt((y * y + (x + dist) * (x + dist))));
+            return 20f * (float) (1 / Math.sqrt((y * y + (x - dist) * (x - dist))) - 1 / Math.sqrt((y * y + (x + dist) * (x + dist))));
         }
     }, func2 = new PixelFunction() { // http://hyperphysics.phy-astr.gsu.edu/hbase/electric/potlin.html#c1
         int d = 4, l = 4;
@@ -47,7 +47,7 @@ public class Main extends ApplicationAdapter {
             float b = MathUtils.log(MathUtils.E, (float) (
                     (l - y + Math.sqrt((l - y) * (l - y) + (d - x) * (d - x))) /
                             (-l - y + Math.sqrt((l + y) * (l + y) + (d - x) * (d - x)))));
-            return 1.3f * (a - b);
+            return 2.6f * (a - b);
         }
     }, func3 = new PixelFunction() {
         float d = 5, l = 4;
@@ -60,7 +60,7 @@ public class Main extends ApplicationAdapter {
             float a = MathUtils.log(MathUtils.E, (float) (
                     (l - y + Math.sqrt((l - y) * (l - y) + (d - x) * (d - x))) /
                             (-l - y + Math.sqrt((l + y) * (l + y) + (d - x) * (d - x)))));
-            return 1.3f * (a - 7.75f / (float) Math.sqrt((y * y + (x + d) * (x + d))));
+            return 2.6f * (a - 7.75f / (float) Math.sqrt((y * y + (x + d) * (x + d))));
         }
     };
 
@@ -75,7 +75,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
-        v = new ExtendViewport(16, 9);
+        v = new ExtendViewport(32, 18);
         ui = new ScreenViewport();
         sb = new SpriteBatch();
         sb.setProjectionMatrix(ui.getCamera().combined);
@@ -93,7 +93,7 @@ public class Main extends ApplicationAdapter {
         px = new Pixmap(ssaa * Gdx.graphics.getWidth(), ssaa * Gdx.graphics.getHeight(), Pixmap.Format.RGB888);
         for (int y = 0; y < ssaa * Gdx.graphics.getHeight(); y++) {
             for (int x = 0; x < ssaa * Gdx.graphics.getWidth(); x++) {
-                float c = func.eval(x, y);
+                float c = func3.eval(x, y);
                 c += 100;
                 c = (Math.abs(c - 100) < 3 && ((c - epsilon) < (int) c || (c + epsilon) > ((int) c + 1))) ? ((int) (c + epsilon)) : 0;
                 px.setColor(colors.containsKey((int) c) ? colors.get((int) c) : Color.WHITE);
